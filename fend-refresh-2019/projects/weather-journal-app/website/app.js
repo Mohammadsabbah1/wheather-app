@@ -25,20 +25,16 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
             if (!response.ok) {
-                throw new Error('Error fetching weather data');
+                return res.status(404).json({ error: 'Location not found' });
             }
-
             const data = await response.json();
             const temperature = data.temperature;
             const date = new Date().toLocaleDateString();
-
-            // Update UI with weather data and user feelings
             dateElement.innerHTML = `Date: ${date}`;
             tempElement.innerHTML = `Temperature: ${temperature}°C`;
             contentElement.innerHTML = `Feelings: ${feelings}`;
         } catch (error) {
             console.error('Error fetching weather data:', error);
-            alert('An error occurred while fetching weather data. Please try again later.');
         }
     });
 });
