@@ -3,14 +3,21 @@ const path = require('path');
 const cors = require('cors');
 const app = express();
 const port = 3000;
+
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors({
     origin: 'http://127.0.0.1:5501', 
     methods: ['GET', 'POST'],
-    allowedHeaders: ['Content-Type'] 
+    allowedHeaders: ['Content-Type']
 }));
+
 const apiKey = 'a8daa1ff3608ccdb0b375dd09bc04362';
+
+// Data storage object
+let projectData = {};
+
+// POST route to fetch weather data
 app.post('/fetchWeather', async (req, res) => {
     const { zipCode } = req.body;
     if (!zipCode) {
@@ -27,6 +34,8 @@ app.post('/fetchWeather', async (req, res) => {
             const { temp: temperature, humidity } = data.main;
             const { speed: windSpeed } = data.wind;
 
+            projectData = { temperature, humidity, windSpeed }; // Save data to projectData
+
             res.json({ temperature, humidity, windSpeed });
         } else {
             res.status(404).json({ error: 'Location not found' });
@@ -35,6 +44,11 @@ app.post('/fetchWeather', async (req, res) => {
         console.error('Error fetching weather data:', error);
         res.status(500).json({ error: 'Error fetching weather data from external API' });
     }
+});
+
+
+app.get('/all', (req, res) => {
+    res.send(projectData);
 });
 
 app.listen(port, () => {
