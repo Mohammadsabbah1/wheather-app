@@ -3,7 +3,6 @@ const path = require('path');
 const cors = require('cors');
 const app = express();
 const port = 3000;
-
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors({
@@ -11,13 +10,8 @@ app.use(cors({
     methods: ['GET', 'POST'],
     allowedHeaders: ['Content-Type']
 }));
-
 const apiKey = 'a8daa1ff3608ccdb0b375dd09bc04362';
-
-// Data storage object
 let projectData = {};
-
-// POST route to fetch weather data
 app.post('/fetchWeather', async (req, res) => {
     const { zipCode } = req.body;
     if (!zipCode) {
