@@ -4,30 +4,96 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Travel Planner</title>
-  <link href="output.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <style>
+    #loading {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 50;
+    }
+    .header-bg {
+      background-color: #FF8000; /* Orange */
+    }
+    .footer-bg {
+      background-color: #001F7D; /* Dark Blue */
+    }
+    .btn-primary {
+      background-color: #FF8000; /* Orange */
+    }
+    .btn-primary:hover {
+      background-color: #e57300; /* Darker Orange */
+    }
+    .text-primary {
+      color: #FF8000; /* Orange */
+    }
+  </style>
 </head>
-<body class="bg-gray-100 p-6">
-  <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
-    <div class="md:flex">
-      <div class="p-8">
-        <h1 class="block mt-1 text-lg leading-tight font-medium text-black">Travel Planner</h1>
-        <form id="travel-form" class="mt-4 space-y-4">
-          <div>
-            <label for="location" class="block text-sm font-medium text-gray-700">Location:</label>
-            <input type="text" id="location" name="location" required class="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-          </div>
-          <div>
-            <label for="date" class="block text-sm font-medium text-gray-700">Date:</label>
-            <input type="date" id="date" name="date" required class="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-          </div>
-          <div>
-            <button type="submit" class="w-full bg-indigo-600 text-white font-bold py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Get Trip Info</button>
-          </div>
-        </form>
-        <div id="trip-info" class="mt-6"></div>
-      </div>
+<body class="bg-gray-100">
+  <!-- Header -->
+  <header class="header-bg p-4 shadow-md">
+    <div class="container mx-auto flex justify-between items-center">
+      <img src="/assets/ticket.gif" alt="Travelo Logo" class="h-10">
+      <h1 class="text-2xl text-white font-bold">Travelo</h1>
     </div>
-  </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container mx-auto p-4">
+    <form id="travel-form" class="bg-white p-6 rounded-md shadow-md mb-8">
+      <div class="mb-4">
+        <label for="location" class="block text-gray-700 font-bold">Location:</label>
+        <input type="text" id="location" class="w-full p-2 border rounded-md" required>
+      </div>
+      <div class="mb-4">
+        <label class="block text-gray-700 font-bold">Trip Type:</label>
+        <div>
+          <input type="radio" id="one-way" name="trip-type" value="one-way" checked>
+          <label for="one-way">One Way</label>
+          <input type="radio" id="round-trip" name="trip-type" value="round-trip">
+          <label for="round-trip">Round Trip</label>
+        </div>
+      </div>
+      <div class="mb-4">
+        <label for="depart-date" class="block text-gray-700 font-bold">Departure Date:</label>
+        <input type="date" id="depart-date" class="w-full p-2 border rounded-md" required>
+      </div>
+      <div class="mb-4" id="return-date-container" style="display:none;">
+        <label for="return-date" class="block text-gray-700 font-bold">Return Date:</label>
+        <input type="date" id="return-date" class="w-full p-2 border rounded-md">
+      </div>
+      <div class="mb-4">
+        <label for="origin" class="block text-gray-700 font-bold">Origin:</label>
+        <input type="text" id="origin" class="w-full p-2 border rounded-md" required>
+        <ul id="origin-suggestions" class="border border-gray-300 bg-white absolute w-full z-10 hidden"></ul>
+      </div>
+      <div class="mb-4">
+        <label for="destination" class="block text-gray-700 font-bold">Destination:</label>
+        <input type="text" id="destination" class="w-full p-2 border rounded-md" required>
+        <ul id="destination-suggestions" class="border border-gray-300 bg-white absolute w-full z-10 hidden"></ul>
+      </div>
+      <button type="submit" class="btn-primary text-white py-2 px-4 rounded-md">Search</button>
+    </form>
+
+    <div id="loading">
+      <img src="/assets/ticket.gif" alt="Loading...">
+    </div>
+
+    <div id="trip-info" class="bg-white p-6 rounded-md shadow-md"></div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer-bg p-4 shadow-md">
+    <div class="container mx-auto text-center text-white">
+      &copy; 2024 Travelo. All rights reserved.
+    </div>
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
